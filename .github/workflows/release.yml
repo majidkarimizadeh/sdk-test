@@ -32,8 +32,15 @@ jobs:
             git commit -m "chore: tidy go.mod and go.sum"
             git push origin HEAD
           )
+      
+      # Step 4: Tag the release
+      - name: Create a Git tag
+        run: |
+          COMMIT_HASH=$(git rev-parse HEAD)
+          git tag -a $COMMIT_HASH -m "Release $COMMIT_HASH"
+          git push origin $COMMIT_HASH
 
-      # Step 4: Run GoReleaser to create the release
+      # Step 5: Run GoReleaser to create the release
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v4
         with:
